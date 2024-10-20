@@ -1,0 +1,8 @@
+{
+  "paid": "PAID",
+  "pending": "PENDING",
+  "inTransit": "IN_TRANSIT",
+  "canceled": "CANCELED",
+  "failed": "FAILED",
+  "reversed": "REVERSED"
+}
