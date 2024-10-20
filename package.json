@@ -76,6 +76,7 @@
         "infile": "CHANGELOG.md",
         "preset": {
           "name": "conventionalcommits",
+          "ignoreRecommendedBump": true,
           "types": [
             {
               "type": "feat",
