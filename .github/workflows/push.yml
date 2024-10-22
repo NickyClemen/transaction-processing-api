@@ -1,0 +1,12 @@
+name: unit testing
+on: push
+jobs:
+  test:
+    name: run repository unit test.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: yarn
+      - name: Run tests
+        run: yarn test
