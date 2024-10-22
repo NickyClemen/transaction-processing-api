@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 
-import CreateNestApplication from './mocks/api/testClient';
-import { AppController } from '../src/app.controller';
-import { AppService } from '../src/app.service';
+import CreateNestApplication from '../mocks/api/testClient';
+import { AppController } from '../../modules/receive-transactions/src/app.controller';
+import { AppService } from '../../modules/receive-transactions/src/app.service';
 
 describe('AppController', () => {
   let appController: AppController;

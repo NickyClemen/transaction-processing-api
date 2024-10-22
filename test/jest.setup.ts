@@ -1,6 +1,6 @@
 import CreateNestApplication from './mocks/api/testClient';
 import Server from './mocks/api/server';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../modules/receive-transactions/src/app.module';
 import { INestApplication } from '@nestjs/common';
 
 export let server: Server;

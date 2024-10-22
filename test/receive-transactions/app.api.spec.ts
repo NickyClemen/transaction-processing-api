@@ -1,4 +1,4 @@
-import { server } from './jest.setup';
+import { server } from '../jest.setup';
 
 describe('AppController (e2e)', () => {
   it('/ (GET)', () => {
