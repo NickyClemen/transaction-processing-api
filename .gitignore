@@ -4,6 +4,11 @@
 /build
 .husky
 .github
+terraform/.terraform
+terraform/.*
+terraform/variables.json
+terraform/terraform.*
+volumne/*
 
 # Logs
 logs
