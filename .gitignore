@@ -2,13 +2,10 @@
 /dist
 /node_modules
 /build
-.husky
-.github
 terraform/.terraform
 terraform/.*
-terraform/variables.json
 terraform/terraform.*
-volumne/*
+volume/*
 
 # Logs
 logs

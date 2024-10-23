@@ -17,3 +17,8 @@ variable "secret_key" {
   type    = string
   default = "secret_key"
 }
+
+variable "debug" {
+  type    = string
+  default = "0"
+}
