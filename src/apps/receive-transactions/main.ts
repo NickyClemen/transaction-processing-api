@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ReceiveTransactionsModule } from './receive-transactions/receive-transactions.module';
+import { ReceiveTransactionsModule } from './receive-transactions.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ReceiveTransactionsModule);

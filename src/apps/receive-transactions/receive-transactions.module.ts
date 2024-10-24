@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import ReceiveTransactionsController from '../../contexts/transactions/infraestructure/controllers/receive-transactions.controller';
+import ReceiveTransactionsController from './controllers/receive-transactions.controller';
 import SendTransactionToSqs from '../../contexts/transactions/application/sendTransactionToSqs.provider';
 
 import HttpExceptionHandler from '../../shared/api/domain/exceptions/httpExceptionHandler';
