@@ -1,5 +1,8 @@
 name: unit testing
-on: push
+on:
+  push:
+    branches:
+      - main
 jobs:
   test:
     name: run repository unit test.
