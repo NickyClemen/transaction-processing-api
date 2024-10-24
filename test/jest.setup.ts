@@ -1,16 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import HttpExceptionHandler from '../src/libraries/exceptions/httpExceptionHandler';
+import HttpExceptionHandler from '../src/shared/api/domain/exceptions/httpExceptionHandler';
 
-import SqsProvider from '../src/libraries/aws/sqs.provider';
-import { sqsProviders } from '../src/libraries/aws/awsClients.provider';
+import ReceiveTransactionsController from '../src/contexts/transactions/infraestructure/controllers/receive-transactions.controller';
+import SendTransactionToSqs from '../src/contexts/transactions/application/sendTransactionToSqs.provider';
+import SendMessageToSqs from '../src/shared/providers/aws/application/sendMessageToSqs.provider';
+import SqsProvider from '../src/shared/providers/aws/application/sqs.provider';
+import { sqsProviders } from '../src/shared/providers/aws/infraestructure/awsClients.provider';
 
-import ReceiveTransactionsController from '../src/receive-transactions/intraestructure/controllers/receive-transactions.controller';
-import SendTransactionToSqs from '../src/receive-transactions/application/providers/sendTransactionToSqs.service';
-
-import CreateNestApplication from './mocks/api/testClient';
-import Server from './mocks/api/server';
+import CreateNestApplication from './shared/api/application/testClient';
+import Server from './shared/api/infraestructure/server';
 
 let app: INestApplication;
 export let server: Server;
@@ -21,6 +21,7 @@ beforeEach(async (): Promise<void> => {
     providers: [
       HttpExceptionHandler,
       SendTransactionToSqs,
+      SendMessageToSqs,
       SqsProvider,
       sqsProviders,
     ],
