@@ -4,6 +4,7 @@ import {
   SQSClient,
   SQSServiceException,
   SendMessageCommand,
+  ReceiveMessageCommand,
 } from '@aws-sdk/client-sqs';
 
 import SqsClientException from '../domain/exceptions/sqsClient.exception';
@@ -22,6 +23,25 @@ export default class SqsProvider {
         // TODO. pass the queue url assembly to the useFactory of the environment variables
         QueueUrl: `http://sqs.${REGION}.${SQS_QUEUE_URL}/000000000000/${SQS_QUEUE_NAME}`,
         MessageBody: JSON.stringify(messageBody),
+      });
+
+      return await this.sqsClient.send(sqsCommand);
+    } catch (error: unknown) {
+      if (error instanceof SQSServiceException) {
+        throw new SqsClientException(error);
+      }
+
+      throw new AwsClientException(error);
+    }
+  }
+
+  async receiveMessage() {
+    try {
+      const { REGION, SQS_QUEUE_URL, SQS_QUEUE_NAME } = process.env;
+      const sqsCommand = new ReceiveMessageCommand({
+        // TODO. pass the queue url assembly to the useFactory of the environment variables
+        QueueUrl: `http://sqs.${REGION}.${SQS_QUEUE_URL}/000000000000/${SQS_QUEUE_NAME}`,
+        MaxNumberOfMessages: 10,
       });
 
       return await this.sqsClient.send(sqsCommand);
