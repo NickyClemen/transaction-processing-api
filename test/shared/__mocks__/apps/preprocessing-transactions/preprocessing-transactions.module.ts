@@ -1,9 +1,10 @@
 import { ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import ReceiveTransactionFromSqs from '../../../../../src/contexts/transactions/application/receiveTransactionFromSqs.provider';
+import ReceiveTransactionFromSqs from '../../../../../src/contexts/transaction-processing/transactions/application/receiveTransactionFromSqs.provider';
+
 import ReceiveMessageFromSqs from '../../../../../src/shared/providers/aws/application/receiveMessageFromSqs.provider';
-import SqsProvider from '../../../../../src/shared/providers/aws/application/sqs.provider';
+import SqsProvider from '../../../../../src/shared/providers/aws/infraestructure/sqs.provider';
 import { sqsProviders } from '../../../../../src/shared/providers/aws/infraestructure/awsClients.provider';
 
 import ModuleBuilder from '../../infraestructure/moduleBuilder.mock';

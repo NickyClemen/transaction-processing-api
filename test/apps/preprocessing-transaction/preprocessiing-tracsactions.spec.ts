@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
 
-import ReceiveTransactionFromSqs from '../../../src/contexts/transactions/application/receiveTransactionFromSqs.provider';
+import ReceiveTransactionFromSqs from '../../../src/contexts/transaction-processing/transactions/application/receiveTransactionFromSqs.provider';
 
 import { preProcessingTransactionsMetadata } from '../../shared/__mocks__/apps/preprocessing-transactions/preprocessing-transactions.module';
 import ModuleBuilder from '../../shared/__mocks__/infraestructure/moduleBuilder.mock';
