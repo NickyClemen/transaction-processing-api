@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { ReceiveMessageCommandOutput } from '@aws-sdk/client-sqs';
 
-import SqsMessageList from '../domain/receiveMessages';
+import SqsMessageList from '../domain/valueObjects/sqsMessageList';
 
-import SqsProvider from './sqs.provider';
+import SqsProvider from '../infraestructure/sqs.provider';
 
 @Injectable()
 export default class ReceiveMessageFromSqs {

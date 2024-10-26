@@ -1,6 +1,10 @@
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
+import { CONNECTOR } from '../../../apps/domain/constants';
+
+import DynamoRepository from './dynamo.repository';
+
 const SQS_CLIENT = 'SQS_CLIENT';
 const DYNAMODB_CLIENT = 'DYNAMODB_CLIENT';
 
@@ -22,4 +26,15 @@ const dynamoProviders = {
   },
 };
 
-export { SQS_CLIENT, DYNAMODB_CLIENT, sqsProviders, dynamoProviders };
+const dynamoConnector = {
+  useClass: DynamoRepository,
+  provide: CONNECTOR,
+};
+
+export {
+  SQS_CLIENT,
+  DYNAMODB_CLIENT,
+  sqsProviders,
+  dynamoProviders,
+  dynamoConnector,
+};

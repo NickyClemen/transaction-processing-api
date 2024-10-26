@@ -1,23 +1,8 @@
-export interface SQSMessage {
-  QueueUrl: string;
-  MessageBody: string;
-  MessageGroupId?: string;
-  MessageDeduplicationId?: string;
-  DelaySeconds?: number;
-}
-
-export interface Job {
-  DataType: string;
-  value: string;
-}
-
-export interface MessageAttributes {
-  job: Job;
-}
-
-export interface MessageBody {
+interface SendMessageResponseMapper {
+  status: number;
+  requestId: string;
   messageId: string;
-  message: any;
-  date: string;
-  MessageAttributes: MessageAttributes;
+  md5OfMessageBody: string;
 }
+
+export { SendMessageResponseMapper };
