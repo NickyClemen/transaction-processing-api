@@ -6,6 +6,7 @@ import {
   GetItemCommand,
   // GetItemInput,
   PutItemCommand,
+  PutItemCommandOutput,
   // PutItemInput,
 } from '@aws-sdk/client-dynamodb';
 
@@ -19,6 +20,7 @@ export default class DynamoRepository implements IRepository {
   constructor() {
     this.dynamoDbClient = new DynamoDBClient({
       region: process.env.REGION,
+      endpoint: `http://${process.env.SQS_QUEUE_URL}`,
     });
   }
 
@@ -35,17 +37,12 @@ export default class DynamoRepository implements IRepository {
     }
   }
 
-  async putItem(input) {
+  async putItem(input): Promise<PutItemCommandOutput> {
     try {
-      const command: PutItemCommand = new PutItemCommand({
-        TableName: input.table,
-        Item: { ...input.item },
-      });
-
+      const command: PutItemCommand = new PutItemCommand(input);
       return await this.dynamoDbClient.send(command);
     } catch (error) {
       if (error instanceof DynamoDBServiceException) {
-        console.log(error);
         throw new DynamoClientException(error);
       }
 

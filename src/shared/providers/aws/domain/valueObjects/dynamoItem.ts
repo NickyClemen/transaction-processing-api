@@ -19,6 +19,7 @@ export default class DynanoItem extends ValueObject<QueuedTransaction> {
         accum[key] = {
           S: typeof value === 'object' ? JSON.stringify(value) : value,
         };
+
         return accum;
       }, {}),
     };

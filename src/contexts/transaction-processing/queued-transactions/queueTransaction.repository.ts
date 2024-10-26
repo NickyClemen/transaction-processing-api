@@ -1,10 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { IRepository } from '../../../shared/repository.interface';
 import { CONNECTOR } from '../../../shared/apps/domain/constants';
+import DynanoItem from '../../../shared/providers/aws/domain/valueObjects/dynamoItem';
+import PutDynamoResponse from '../../../shared/providers/aws/domain/valueObjects/putDynamoResponse';
+import { PutItemResponseMapper } from '../../../shared/providers/aws/domain/interfaces/dynamo.interface';
 
 import { QueuedTransaction } from './queuedTransaction';
-import DynanoItem from '../../../shared/providers/aws/domain/valueObjects/dynamoItem';
 
 @Injectable()
 export default class QueuedTransactionRepository implements IRepository {
@@ -15,14 +20,18 @@ export default class QueuedTransactionRepository implements IRepository {
     console.log(input);
   }
 
-  async putItem(input: QueuedTransaction) {
+  async putItem(input: QueuedTransaction): Promise<PutItemResponseMapper> {
     const putItem = new DynanoItem({
       table: this.table,
-      item: { ...input },
+      item: { ...input, id: uuidv4() },
     });
 
-    const result = await this.repository.putItem(putItem.valueMapper());
+    const result: PutItemCommandOutput = await this.repository.putItem(
+      putItem.valueMapper(),
+    );
 
-    console.log(result);
+    const putDynamoResponse: PutDynamoResponse = new PutDynamoResponse(result);
+
+    return putDynamoResponse.valueMapper();
   }
 }

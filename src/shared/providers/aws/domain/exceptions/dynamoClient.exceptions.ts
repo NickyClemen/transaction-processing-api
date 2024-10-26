@@ -1,7 +1,9 @@
+import { DynamoDBServiceException } from '@aws-sdk/client-dynamodb';
+
 import errorCodes from './errorCodes';
 
 export default class DynamoClientException extends Error {
-  constructor(private readonly error) {
+  constructor(private readonly error: DynamoDBServiceException) {
     super();
   }
 

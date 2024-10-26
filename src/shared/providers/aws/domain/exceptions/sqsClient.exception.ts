@@ -1,7 +1,9 @@
+import { SQSServiceException } from '@aws-sdk/client-sqs';
+
 import errorCodes from './errorCodes';
 
 export default class SqsClientException extends Error {
-  constructor(private readonly error) {
+  constructor(private readonly error: SQSServiceException) {
     super();
   }
 

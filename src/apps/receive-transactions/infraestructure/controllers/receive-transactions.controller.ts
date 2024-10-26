@@ -13,7 +13,8 @@ import { QueuedTransactionInDynamo } from '../../../../contexts/transaction-proc
 
 import HttpExceptionHandler from '../../../../shared/apps/domain/exceptions/httpExceptionHandler';
 import { StatusResponse } from '../../../../shared/apps/domain/interfaces/statusResponse.interface';
-// import { SendMessageResponseMapper } from '../../../../shared/providers/aws/domain/interfaces/sqs.interface';
+import { SendMessageResponseMapper } from '../../../../shared/providers/aws/domain/interfaces/sqs.interface';
+import { PutItemResponseMapper } from '../../../../shared/providers/aws/domain/interfaces/dynamo.interface';
 
 @Controller('transactions')
 export default class ReceiveTransactionsController {
@@ -32,14 +33,15 @@ export default class ReceiveTransactionsController {
     @Res() res: StatusResponse<HttpStatus.OK>,
   ): Promise<unknown> {
     try {
-      const response = await this.sendTransactionToSqs.execute(transaction);
+      const { messageId }: SendMessageResponseMapper =
+        await this.sendTransactionToSqs.execute(transaction);
 
-      /* const response = await this.queuedTransactionInDynamo.enqueueTransactions(
-        {
+      const response: PutItemResponseMapper =
+        await this.queuedTransactionInDynamo.enqueueTransactions({
           ...transaction,
-          messageId: '1',
-        },
-      ); */
+          messageId,
+        });
+
       return res.status(HttpStatus.OK).json(response);
     } catch (error: unknown) {
       // TODO replace try/catch with a middleware/interceptor.
