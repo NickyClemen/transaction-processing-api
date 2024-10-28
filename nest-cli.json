@@ -1,8 +1,30 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/queued-transactions/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "projects": {
+    "queued-transactions": {
+      "type": "application",
+      "root": "apps/queued-transactions",
+      "entryFile": "main",
+      "sourceRoot": "apps/queued-transactions/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/queued-transactions/tsconfig.app.json"
+      }
+    },
+    "receive-transactions": {
+      "type": "application",
+      "root": "apps/receive-transactions",
+      "entryFile": "main",
+      "sourceRoot": "apps/receive-transactions/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/receive-transactions/tsconfig.app.json"
+      }
+    }
   }
 }

@@ -5,9 +5,10 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "terraform/dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -16,9 +17,6 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true,
-    "paths": {
-      "messages": ["./public/*"]
-    }
+    "paths": {}
   }
 }
