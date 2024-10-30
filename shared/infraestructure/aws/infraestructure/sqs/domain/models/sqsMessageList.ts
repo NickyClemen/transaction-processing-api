@@ -1,6 +1,6 @@
 import { ReceiveMessageCommandOutput } from '@aws-sdk/client-sqs';
 
-import { ValueObject } from '../../../../../../domain/valueObject';
+import { ValueObject } from '../../../../../../domain/models/valueObject';
 
 import { Message } from '../types/message';
 import { ReceiveMessagesOutput } from '../interfaces/receiveMessagesOutput';
