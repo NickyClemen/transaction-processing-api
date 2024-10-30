@@ -1,85 +1,45 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Transaction Proccesing API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este módulo fue construído como un emulador de procesador de pagos para dinero en cuenta.
+El mismo se encuentra conformado por tres módulos principales:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  1. queue-transactions
+    Este módulo expone un endpoint ('/v1/transactions/receive') para ser consumida por clientes externos. Sólo contiene un método POST cuyo payload es el siguiente:
 
-## Description
+      ```json
+        externalId: identificador único de la transacción que está siendo procesada por el agente externo.
+        ip: IP del momento en que se ejecutó el inicio de la transacción. El mismo se utiliza como parámetro para validaciones de seguridad.
+        buyer: Objeto con datos requeridos para validar la cuenta del comprador.
+        amount: Importe de la transacción.
+        currency: moneda en la cuál se procesara el pago.
+        type: tipo de transacción. En este caso será en pesos argentinos (ARS), pero el módulo puede ser iterado para agregar otras monedas y flujos de cobro a partir de ellas.
+      ```
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+    Luego de recibir los datos, se encarga de enviar la transacción a una queue SQS para su procesamiento asíncrono.
 
-## Project setup
+  2. receive-transactions
 
-```bash
-$ yarn install
-```
+    Lambda Function que se triggerea cuando la queue recibe mensajes. La misma ejecuta una serie de validaciones para asegurar que:
+      1) La transacción no esté duplicada por medio de la utilización de una tabla de transacciones en Dynamo llamada 'queud-transactions', con la cuál
+      se lleva un traqueo de la transacción en la queue y un registro histórico temporal. La misma debe ser limpiada cada veinticatro horas.
+      2) Si la transacción de encuentra duplicada, el módulo la elimina de la queue y continúa procesando la siguiente.
+      3) Al completarse el pro-procesamiento, se procede a invocar el validation-service para procesar la transacción.
+      4) Al completarse la ejecución del servicio, la transacción es almacenada en la tabla 'transactions', se actualiza el status en 'queud-transactions' y es eliminada de la queue.
 
-## Compile and run the project
+  3. validation-service
 
-```bash
-# development
-$ yarn run start
+    Lambda function que realiza una serie de validaciones sobre la transacción bajo una serie de reglas:
+      1) Titularidad de la cuenta.
+      2) Geolocalización.
+      3) Saldo en cuenta.
+      4) El tipo de moneda.
+      5) Cantidad de transacciones hechas dentro de un límite de tiempo.
 
-# watch mode
-$ yarn run start:dev
+      Todas esas reglas deben ser cumplidas para que el simulador procese el pago y cambie su estado a 'PAID', sino el mismo será rechazado y con el subsiguiente 'REJECT'
+      y description del motivo del rechazo.
 
-# production mode
-$ yarn run start:prod
-```
+  Cada módulo fue pensando para que cumpla una sola tarea y limitar el alcance de los recursos a los que puede acceder, intentando facilitar, en el camino, la complejidad del mantenimiento y escalabilidad
+  de la solución.
 
-## Run tests
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+  El proyecto en código fue construído sobre un monorepo de Nestjs para facilitar el acceso de los módulos a los recursos compartidos entre los módulos. La infraestructura está montada con Terraform y los
+  servicios de AWS son simulados con LocalStack.

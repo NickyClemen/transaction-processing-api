@@ -29,9 +29,9 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
-    "@nestjs/cqrs": "^10.2.7",
     "@nestjs/platform-express": "^10.0.0",
     "aws-lambda": "^1.0.7",
+    "ip-location-api": "^2.3.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "uuid": "^10.0.0"
@@ -89,6 +89,9 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./apps/queued-transactions/test/jest.setup.ts"
+    ],
     "roots": [
       "<rootDir>/apps/"
     ]

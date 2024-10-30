@@ -25,6 +25,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/receive-transactions/tsconfig.app.json"
       }
+    },
+    "validation-service": {
+      "type": "application",
+      "root": "apps/validation-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/validation-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/validation-service/tsconfig.app.json"
+      }
     }
   }
 }
