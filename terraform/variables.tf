@@ -10,12 +10,12 @@ variable "replica_region" {
 
 variable "access_key" {
   type    = string
-  default = "access_key"
+  default = "test"
 }
 
 variable "secret_key" {
   type    = string
-  default = "secret_key"
+  default = "test"
 }
 
 variable "debug" {

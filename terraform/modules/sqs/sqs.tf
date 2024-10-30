@@ -19,3 +19,25 @@ resource "aws_sqs_queue" "dlq_queue" {
   name                      = local.dlq_queue_name
   message_retention_seconds = var.dlq_message_retention_seconds
 }
+
+resource "aws_iam_policy" "sqs-policy" {
+  name        = "${var.queue_name}-sqs-policy"
+  description = "${var.queue_name}-sqs-policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}

@@ -26,10 +26,10 @@ resource "aws_dynamodb_table" "queued_transactions" {
   name           = var.queued_transactions_table_name
   read_capacity  = 10
   write_capacity = 10
-  hash_key       = "id"
+  hash_key       = "messageId"
 
   attribute {
-    name = "id"
+    name = "messageId"
     type = "S"
   }
 }

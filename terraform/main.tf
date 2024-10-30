@@ -5,3 +5,7 @@ module "dynamo" {
 module "sqs" {
   source = "./modules/sqs"
 }
+
+module "lambda" {
+  source = "./modules/lambda"
+}
