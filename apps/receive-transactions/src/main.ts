@@ -1,26 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 
-import serverlessExpress from '@codegenie/serverless-express';
-
-import { SQSEvent, Context, SQSHandler, Handler, Callback } from 'aws-lambda';
+import { SQSEvent, Context, SQSHandler } from 'aws-lambda';
 
 import { ReceiveTransactionsModule } from './receive-transactions.module';
-
-let server: Handler;
+import ReceiveMessagesFromSqs from './application/receiveMessagesFromSqs.provider';
 
 export const handler: SQSHandler = async (
   event: SQSEvent,
   context: Context,
-  callback: Callback,
 ) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
+  const appContext = await NestFactory.createApplicationContext(
+    ReceiveTransactionsModule,
+  );
+
+  const receiveTransactionsFromSqs = appContext.get(ReceiveMessagesFromSqs);
+  return await receiveTransactionsFromSqs.execute({ event, context });
 };
-
-async function bootstrap(): Promise<SQSHandler> {
-  const app = await NestFactory.create(ReceiveTransactionsModule);
-  await app.init();
-
-  const expressApp = app.getHttpAdapter().getInstance();
-  return serverlessExpress({ app: expressApp });
-}

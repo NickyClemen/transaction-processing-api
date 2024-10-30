@@ -1,23 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import ReceiveTransactionFromSqs from '../../../contexts/receive-transactions/application/receiveTransactionFromSqs.provider';
+import QueuedTransactionRepository from '../../../contexts/queue-transactions/infraestructure/queueTransaction.repository';
 
-import SqsProvider from '../../../shared/infraestructure/aws/infraestructure/sqs/application/sqs.provider';
-import ReceiveMessageFromSqs from '../../../shared/infraestructure/aws/infraestructure/sqs/application/receiveMessage.provider';
-import { SqsProvide } from '../../../shared/infraestructure/aws/infraestructure/sqs/infraestructure';
+import { dynamoConnector } from '../../../shared/infraestructure/aws/infraestructure/dynamo/infraestructure/dynamo.repository';
+
+import { ProcessMessages } from './application/processMessages.provider';
+import ReceiveMessagesFromSqs from './application/receiveMessagesFromSqs.provider';
 
 @Module({
   providers: [
-    ReceiveTransactionFromSqs,
-    ReceiveMessageFromSqs,
-    SqsProvider,
-    SqsProvide,
+    ReceiveMessagesFromSqs,
+    ProcessMessages,
+    QueuedTransactionRepository,
+    dynamoConnector,
   ],
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.env.testing'],
-    }),
-  ],
+  imports: [ConfigModule.forRoot({})],
 })
 export class ReceiveTransactionsModule {}
