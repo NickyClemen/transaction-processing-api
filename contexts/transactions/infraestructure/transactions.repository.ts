@@ -1,36 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
-
 import {
   GetItemCommandOutput,
   PutItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { CONNECTOR } from '../../../shared/domain/constants';
 import { IRepository } from '../../../shared/domain/interfaces/repository.interface';
 
 import { ResponseMapper } from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/interfaces/responseMapper.interface';
-
-import DynamoItem from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/dynamoItem';
 import GetDynamoResponse from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/getDynamoResponse';
 import PutDynamoResponse from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/putDynamoResponse';
+import DynamoItem from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/dynamoItem';
 
-import {
-  IQueuedTransaction,
-  IQueuedTransactionRepository,
-} from '../domain/queuedTransaction';
+import { ITransaction, ITransactionRepository } from '../domain/transaction';
 
 @Injectable()
-export default class QueuedTransactionRepository
-  implements IQueuedTransactionRepository
-{
-  static readonly QUEUED_TRANSACTION_REPOSITORY =
-    'QUEUED_TRANSACTION_REPOSITORY';
-
-  private readonly table = process.env.QUEUED_TRANSACTIONS_TABLE;
+export default class TransactionRepository implements ITransactionRepository {
+  static readonly TRANSACTION_REPOSITORY: string = 'TRANSACTION_REPOSITORY';
+  private readonly table = process.env.TRANSACTION_REPOSITORY;
   constructor(@Inject(CONNECTOR) private readonly repository: IRepository) {}
-  queryItems(input: any) {
-    throw new Error('Method not implemented.');
-  }
 
   async getItem(input): Promise<ResponseMapper> {
     const getItem = new DynamoItem({
@@ -47,11 +37,11 @@ export default class QueuedTransactionRepository
     return getDynamoResponse.valueMapper();
   }
 
-  async putItem(input: IQueuedTransaction): Promise<ResponseMapper> {
+  async putItem(input: ITransaction): Promise<ResponseMapper> {
     const putItem = new DynamoItem({
       table: this.table,
       dynamoType: 'Item',
-      body: { ...input },
+      body: { ...input, id: uuidv4() },
     });
 
     const result: PutItemCommandOutput = await this.repository.putItem(

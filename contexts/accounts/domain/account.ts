@@ -1,10 +1,12 @@
-import { IRepository } from '../../../shared/domain/interfaces/repository.interface';
 import IBuyer from '../../../shared/domain/interfaces/buyer';
-import { Balance } from '../../../shared/domain/models/balance';
+import { IBalance } from '../../../shared/domain/models/balance';
+import { IRepository } from '../../../shared/domain/interfaces/repository.interface';
+import { ResponseMapper } from '../../../shared/infraestructure/aws/infraestructure/dynamo/domain/interfaces/responseMapper.interface';
 
-const ACCOUNT_REPOSITORY = 'ACCOUNT_REPOSITORY';
-
-interface IAccountRepository extends IRepository {}
+interface IAccountRepository extends IRepository {
+  getItem(input): Promise<ResponseMapper>;
+  putItem(input): Promise<ResponseMapper>;
+}
 
 interface ILastLogin {
   ip: string;
@@ -14,8 +16,8 @@ interface ILastLogin {
 interface IAccount extends IBuyer {
   id: string;
   country: string;
-  balance: Balance;
+  balance: IBalance;
   lastLogin: ILastLogin;
 }
 
-export { IAccount, ACCOUNT_REPOSITORY, IAccountRepository };
+export { IAccount, IAccountRepository };
