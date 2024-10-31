@@ -17,10 +17,11 @@ export default class SqsMessageList extends ValueObject<ReceiveMessageCommandOut
       status: $metadata.httpStatusCode,
       requestId: $metadata.requestId,
       messages: Messages.map((message: Message) => {
-        const { Body, MessageId } = message;
+        const { Body, MessageId, ReceiptHandle } = message;
         return {
           body: JSON.parse(Body),
           id: MessageId,
+          receiptHandle: ReceiptHandle,
         };
       }),
     } as ReceiveMessagesOutput;

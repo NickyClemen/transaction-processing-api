@@ -1,10 +1,12 @@
-import { QueuedTransaction } from '../../../../../../contexts/queue-transactions/domain/queuedTransaction';
+import { IAccount } from '../../../../../../contexts/accounts/domain/account';
+import { ITransaction } from '../../../../../../contexts/transactions/domain/transaction';
+import { IQueuedTransaction } from '../../../../../../contexts/queue-transactions/domain/queuedTransaction';
 
 import { ValueObject } from '../../../../../domain/models/valueObject';
 
 type DynamoTypeParams = {
   table: string;
-  body: QueuedTransaction;
+  body: IQueuedTransaction | ITransaction | IAccount;
   dynamoType: 'Key' | 'Item';
 };
 

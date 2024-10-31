@@ -15,10 +15,6 @@ import { CONNECTOR } from '../../../../../domain/constants';
 import { IRepository } from '../../../../../domain/interfaces/repository.interface';
 import AwsClientException from '../../../domain/exceptions/awsClient.exceptions';
 import DynamoClientException from '../domain/exceptions/dynamoClient.exceptions';
-import {
-  DeleteMessageCommand,
-  DeleteMessageCommandOutput,
-} from '@aws-sdk/client-sqs';
 
 @Injectable()
 export default class DynamoRepository implements IRepository {

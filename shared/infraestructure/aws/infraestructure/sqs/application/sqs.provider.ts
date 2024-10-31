@@ -7,6 +7,8 @@ import {
   ReceiveMessageCommand,
   SendMessageCommandOutput,
   ReceiveMessageCommandOutput,
+  DeleteMessageCommandOutput,
+  DeleteMessageCommand,
 } from '@aws-sdk/client-sqs';
 
 import SqsClientException from '../domain/exceptions/sqsClient.exception';
@@ -20,10 +22,10 @@ export default class SqsProvider {
 
   async sendMessage(messageBody): Promise<SendMessageCommandOutput> {
     try {
-      const { REGION, SQS_QUEUE_URL, SQS_QUEUE_NAME } = process.env;
+      const { REGION, LOCALSTACK_URL, SQS_QUEUE_NAME } = process.env;
       const sqsCommand = new SendMessageCommand({
         // TODO. pass the queue url assembly to the useFactory of the environment variables
-        QueueUrl: `http://sqs.${REGION}.${SQS_QUEUE_URL}/000000000000/${SQS_QUEUE_NAME}`,
+        QueueUrl: `http://sqs.${REGION}.${LOCALSTACK_URL}/000000000000/${SQS_QUEUE_NAME}`,
         MessageBody: JSON.stringify(messageBody),
       });
 
@@ -39,11 +41,32 @@ export default class SqsProvider {
 
   async receiveMessage(): Promise<ReceiveMessageCommandOutput> {
     try {
-      const { REGION, SQS_QUEUE_URL, SQS_QUEUE_NAME } = process.env;
+      const { REGION, LOCALSTACK_URL, SQS_QUEUE_NAME } = process.env;
       const sqsCommand = new ReceiveMessageCommand({
         // TODO. pass the queue url assembly to the useFactory of the environment variables
-        QueueUrl: `http://sqs.${REGION}.${SQS_QUEUE_URL}/000000000000/${SQS_QUEUE_NAME}`,
+        QueueUrl: `http://sqs.${REGION}.${LOCALSTACK_URL}/000000000000/${SQS_QUEUE_NAME}`,
         MaxNumberOfMessages: 10,
+      });
+
+      return await this.sqsClient.send(sqsCommand);
+    } catch (error: unknown) {
+      if (error instanceof SQSServiceException) {
+        throw new SqsClientException(error);
+      }
+
+      throw new AwsClientException(error);
+    }
+  }
+
+  async deleteMessage(
+    receiptHandle: string,
+  ): Promise<DeleteMessageCommandOutput> {
+    try {
+      const { REGION, LOCALSTACK_URL, SQS_QUEUE_NAME } = process.env;
+      const sqsCommand = new DeleteMessageCommand({
+        // TODO. pass the queue url assembly to the useFactory of the environment variables
+        QueueUrl: `http://sqs.${REGION}.${LOCALSTACK_URL}/000000000000/${SQS_QUEUE_NAME}`,
+        ReceiptHandle: receiptHandle,
       });
 
       return await this.sqsClient.send(sqsCommand);

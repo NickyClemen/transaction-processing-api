@@ -4,4 +4,5 @@ export default {
   InternalError: 'INTERNAL_SERVER_ERROR',
   UnrecognizedClientException: 'BAD_REQUEST',
   ValidationException: 'BAD_REQUEST',
+  ReceiptHandleIsInvalid: 'BAD_REQUEST',
 };
