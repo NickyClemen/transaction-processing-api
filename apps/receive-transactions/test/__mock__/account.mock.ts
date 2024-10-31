@@ -1,10 +1,10 @@
-import clientMock from './buyer.mock';
+import buyerMock from './buyer.mock';
 
 export default {
-  ...clientMock,
+  ...buyerMock,
   associated_cards: [],
   balance: {
-    currency: 'AR',
+    currency: 'ARS',
     funds: 1000.0,
   },
 };

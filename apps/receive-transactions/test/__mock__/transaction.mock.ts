@@ -1,4 +1,4 @@
-import buyer from './buyer.mock';
+import buyer from '../../../validation-service/__mocks__/buyer.mock';
 
 export const transactionMock = {
   buyer,
