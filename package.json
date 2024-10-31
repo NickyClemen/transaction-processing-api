@@ -89,9 +89,6 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./apps/queued-transactions/test/jest.setup.ts"
-    ],
     "roots": [
       "<rootDir>/apps/"
     ]

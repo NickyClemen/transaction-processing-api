@@ -15,6 +15,20 @@ export default class SendTransaction {
   async execute(
     transaction: TransactionMessageBody,
   ): Promise<SendMessageResponseMapper> {
-    return await this.sendMessage.execute(transaction);
+    const { messageId }: SendMessageResponseMapper =
+      await this.sendMessage.execute(transaction);
+    const result: ResponseMapper =
+      await this.queuedTransactionRepository.getItem({
+        messageId,
+      });
+
+    if (result.item) {
+      return await this.deleteMessagesFromSqs.execute(receiptHandle);
+    }
+
+    await this.queuedTransactionRepository.putItem({
+      messageId,
+      ...JSON.parse(body),
+    });
   }
 }
