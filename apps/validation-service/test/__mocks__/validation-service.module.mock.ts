@@ -8,6 +8,7 @@ import CountTransactionsPerPeriod from '../../../../contexts/validation-service/
 import BalanceValidator from '../../../../contexts/validation-service/application/balanceValidator.provider';
 
 const validationServiceMetadata: ModuleMetadata = {
+  exports: [ValidatorBuilder],
   providers: [
     ValidatorBuilder,
     IpValidator,

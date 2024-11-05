@@ -11,6 +11,7 @@ const transactionMock: Omit<ITransaction, 'id'> = {
   currency: 'ARS',
   type: 'FUNDS_IN_ACCOUNT',
   ip: '181.26.41.25',
+  created_at: new Date().getTime(),
 };
 
 const transactionCompleteMock: ITransaction = {
@@ -23,6 +24,7 @@ const transactionCompleteMock: ITransaction = {
   currency: 'ARS',
   type: 'FUNDS_IN_ACCOUNT',
   ip: '181.26.41.25',
+  created_at: new Date().getTime(),
 };
 
 export { transactionMock, transactionCompleteMock };

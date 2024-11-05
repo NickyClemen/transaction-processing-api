@@ -21,6 +21,7 @@ export default class IpValidator {
   async execute(transaction: TransactionMessageBody) {
     const { buyer, ip } = transaction;
     const checkCountryIp = await lookup(ip);
+
     const response: ResponseMapper = await this.accountRepository.getItem({
       id: buyer.id,
       email: buyer.email,
@@ -31,7 +32,7 @@ export default class IpValidator {
 
     const { country } = response.item as IAccount;
 
-    if (!country === checkCountryIp.country_name) {
+    if (country === checkCountryIp.country_name) {
       throw new IpValidatorException();
     }
   }

@@ -14,7 +14,7 @@ export default class GetDynamoResponse extends ValueObject<GetItemCommandOutput>
   }
 
   valueMapper(): ResponseMapper {
-    const { $metadata, Item } = this.value;
+    const { $metadata, Item = {} } = this.value;
 
     return {
       status: $metadata.httpStatusCode,

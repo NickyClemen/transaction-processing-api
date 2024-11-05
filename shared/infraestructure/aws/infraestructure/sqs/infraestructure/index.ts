@@ -6,6 +6,7 @@ const SqsProvide = {
   useFactory: async (): Promise<SQSClient> => {
     return new SQSClient({
       region: process.env.REGION,
+      useQueueUrlAsEndpoint: true,
     });
   },
 };

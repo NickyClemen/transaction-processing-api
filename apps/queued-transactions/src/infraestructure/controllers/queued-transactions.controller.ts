@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 
 import { ITransaction } from '../../../../../contexts/transactions/domain/transaction';
-import { SendMessageResponseMapper } from '../../../../../shared/infraestructure/aws/infraestructure/sqs/domain/interfaces/sqs.interface';
 
 import HttpExceptionHandler from '../../domain/exceptions/httpExceptionHandler';
 import { StatusResponse } from '../../domain/interfaces/statusResponse.interface';
@@ -29,10 +28,8 @@ export default class QueuedTransactionsController {
     @Res() res: StatusResponse<HttpStatus.OK>,
   ): Promise<unknown> {
     try {
-      const { messageId }: SendMessageResponseMapper =
-        await this.sendTransaction.execute(transaction);
-
-      return res.status(HttpStatus.OK).json({ messageId });
+      const response = await this.sendTransaction.execute(transaction);
+      return res.status(HttpStatus.OK).json({ ...response });
     } catch (error: unknown) {
       // TODO replace try/catch with a middleware/interceptor.
       this.httpExceptionHandler.throwHttpException(error);

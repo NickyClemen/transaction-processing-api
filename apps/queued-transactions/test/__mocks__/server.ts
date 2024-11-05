@@ -1,4 +1,4 @@
-import supertest from 'supertest';
+import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 export default class Server {

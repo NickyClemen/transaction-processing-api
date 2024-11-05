@@ -7,10 +7,10 @@ import SqsMessage from '../domain/models/sqsMessage';
 import { SendMessageResponseMapper } from '../domain/interfaces/sqs.interface';
 
 @Injectable()
-export default class SendMessage<T> {
+export default class SendMessage {
   constructor(@Inject(SqsProvider) private readonly sqsProvider: SqsProvider) {}
 
-  async execute(messageBody: T): Promise<SendMessageResponseMapper> {
+  async execute(messageBody): Promise<SendMessageResponseMapper> {
     const response: SendMessageCommandOutput =
       await this.sqsProvider.sendMessage(messageBody);
 

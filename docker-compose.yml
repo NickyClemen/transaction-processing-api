@@ -6,7 +6,11 @@ services:
       - '127.0.0.1:4566:4566'
       - '127.0.0.1:4510-4559:4510-4559'
     environment:
-      - DEBUG=${DEBUG:-0}
+      # - DEBUG=${DEBUG:-0}
+      - DEBUG=1
+      - IAM_SOFT_MODE=1
+      - LOCALSTACK_AUTH_TOKEN=ls-FaKacUKa-cAHE-WEwe-YOXe-317377428392
+
     volumes:
       - '${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'

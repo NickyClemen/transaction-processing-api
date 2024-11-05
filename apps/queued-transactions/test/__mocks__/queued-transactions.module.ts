@@ -5,8 +5,11 @@ import HttpExceptionHandler from '../../../../apps/queued-transactions/src/domai
 import SendTransaction from '../../src/application/sendTransaction.provider';
 import QueuedTransactionsController from '../../../../apps/queued-transactions/src/infraestructure/controllers/queued-transactions.controller';
 
+import QueuedTransactionRepository from '../../../../contexts/queue-transactions/infraestructure/queueTransaction.repository';
+
+import { dynamoConnector } from '../../../../shared/infraestructure/aws/infraestructure/dynamo/infraestructure/dynamo.repository';
 import { SqsProvide } from '../../../../shared/infraestructure/aws/infraestructure/sqs/infraestructure';
-import SendMessage from '../../../../shared/infraestructure/aws/infraestructure/sqs/application/receiveMessage.provider';
+import SendMessage from '../../../../shared/infraestructure/aws/infraestructure/sqs/application/sendMessage.provider';
 import SqsProvider from '../../../../shared/infraestructure/aws/infraestructure/sqs/application/sqs.provider';
 
 import ModuleBuilder from '../__mocks__/moduleBuilder.mock';
@@ -20,6 +23,11 @@ const queuedTransactionMetadata: ModuleMetadata = {
     SendMessage,
     SqsProvider,
     SqsProvide,
+    dynamoConnector,
+    {
+      provide: QueuedTransactionRepository.QUEUED_TRANSACTION_REPOSITORY,
+      useClass: QueuedTransactionRepository,
+    },
   ],
 };
 
