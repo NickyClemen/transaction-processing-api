@@ -8,9 +8,9 @@ variable "transactions-processing-api-bucket_name" {
   default = "transactions-processing-api-bucket"
 }
 
-variable "validation-service-lambda-lambda_name" {
+variable "receive-transactions-lambda_name" {
   type    = string
-  default = "validation-service-lambda"
+  default = "receive-transactions"
 }
 
 variable "queued-transactions-lambda_name" {
