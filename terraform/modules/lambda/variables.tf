@@ -1,21 +1,16 @@
-variable "transactions-processing-api" {
+variable "transactions-processing" {
   type    = string
-  default = "transactions-processing-api"
+  default = "transactions-processing"
 }
 
-variable "transactions-processing-api-bucket_name" {
-  type    = string
-  default = "transactions-processing-api-bucket"
-}
-
-variable "receive-transactions-lambda_name" {
+variable "receive-transactions" {
   type    = string
   default = "receive-transactions"
 }
 
-variable "queued-transactions-lambda_name" {
+variable "queued-transactions" {
   type    = string
-  default = "queued-transactions-lambda"
+  default = "queued-transactions"
 }
 
 variable "sqs_arn" {
