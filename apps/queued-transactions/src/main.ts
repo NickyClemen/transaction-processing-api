@@ -2,6 +2,7 @@ import express from '@codegenie/serverless-express';
 
 import { NestFactory } from '@nestjs/core';
 import { Callback, Context, Handler } from 'aws-lambda';
+
 import { QueuedTransactionModule } from './queued-transactions.module';
 
 let server: Handler;

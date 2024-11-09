@@ -5,19 +5,19 @@ import {
   Inject,
   Res,
   HttpStatus,
+  UseFilters,
 } from '@nestjs/common';
 
 import { ITransaction } from '../../../../../contexts/transactions/domain/transaction';
 
-import HttpExceptionHandler from '../../domain/exceptions/httpExceptionHandler';
+import QueuedTransactionsErrorFilter from '../../domain/exceptions/queuedTransactionsErrorFilter';
 import { StatusResponse } from '../../domain/interfaces/statusResponse.interface';
 import SendTransaction from '../../application/sendTransaction.provider';
 
 @Controller('transactions')
+@UseFilters(QueuedTransactionsErrorFilter)
 export default class QueuedTransactionsController {
   constructor(
-    @Inject(HttpExceptionHandler)
-    private readonly httpExceptionHandler: HttpExceptionHandler,
     @Inject(SendTransaction)
     private readonly sendTransaction: SendTransaction,
   ) {}
@@ -27,12 +27,7 @@ export default class QueuedTransactionsController {
     @Body() transaction: ITransaction,
     @Res() res: StatusResponse<HttpStatus.OK>,
   ): Promise<unknown> {
-    try {
-      const response = await this.sendTransaction.execute(transaction);
-      return res.status(HttpStatus.OK).json({ ...response });
-    } catch (error: unknown) {
-      // TODO replace try/catch with a middleware/interceptor.
-      this.httpExceptionHandler.throwHttpException(error);
-    }
+    const response = await this.sendTransaction.execute(transaction);
+    return res.status(HttpStatus.OK).json({ ...response });
   }
 }

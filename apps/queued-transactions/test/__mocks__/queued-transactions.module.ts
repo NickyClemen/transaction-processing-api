@@ -1,7 +1,6 @@
 import { ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import HttpExceptionHandler from '../../../../apps/queued-transactions/src/domain/exceptions/httpExceptionHandler';
 import SendTransaction from '../../src/application/sendTransaction.provider';
 import QueuedTransactionsController from '../../../../apps/queued-transactions/src/infraestructure/controllers/queued-transactions.controller';
 
@@ -18,7 +17,6 @@ const queuedTransactionMetadata: ModuleMetadata = {
   imports: [ConfigModule.forRoot()],
   controllers: [QueuedTransactionsController],
   providers: [
-    HttpExceptionHandler,
     SendTransaction,
     SendMessage,
     SqsProvider,

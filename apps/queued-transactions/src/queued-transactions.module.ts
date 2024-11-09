@@ -8,7 +8,6 @@ import SqsProvider from '../../../shared/infraestructure/aws/infraestructure/sqs
 import { dynamoConnector } from '../../../shared/infraestructure/aws/infraestructure/dynamo/infraestructure/dynamo.repository';
 import { SqsProvide } from '../../../shared/infraestructure/aws/infraestructure/sqs/infraestructure';
 
-import HttpExceptionHandler from './domain/exceptions/httpExceptionHandler';
 import SendTransaction from './application/sendTransaction.provider';
 import QueuedTransactionsController from './infraestructure/controllers/queued-transactions.controller';
 
@@ -16,7 +15,6 @@ import QueuedTransactionsController from './infraestructure/controllers/queued-t
   imports: [ConfigModule.forRoot()],
   controllers: [QueuedTransactionsController],
   providers: [
-    HttpExceptionHandler,
     SendTransaction,
     SendMessage,
     SqsProvider,
