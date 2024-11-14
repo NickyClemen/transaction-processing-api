@@ -11,6 +11,7 @@
     "format": "prettier --write \"apps/**/*.ts\" \"shared/**/*.ts\" \"contexts/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prepare": "husky",
+    "postbuild": "cp package*.json dist && cd dist && yarn",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -34,7 +35,7 @@
     "ip-location-api": "^2.3.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "uuid": "^10.0.0"
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.664.0",

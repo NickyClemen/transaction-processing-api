@@ -2,7 +2,7 @@ import { ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { validationServiceMetadata } from '../../../../apps/validation-service/test/__mocks__/validation-service.module.mock';
-import DeleteMessagesFromSqs from '../../../../apps/receive-transactions/src/application/deleteMessagesFromSqs.provider';
+import DeleteMessagesFromSqs from '../../src/application/deleteMessagesFromSqs.provider';
 
 import QueuedTransactionRepository from '../../../../contexts/queue-transactions/infraestructure/queueTransaction.repository';
 import TransactionRepository from '../../../../contexts/transactions/infraestructure/transactions.repository';

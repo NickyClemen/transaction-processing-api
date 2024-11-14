@@ -2,7 +2,7 @@ import { ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import SendTransaction from '../../src/application/sendTransaction.provider';
-import QueuedTransactionsController from '../../../../apps/queued-transactions/src/infraestructure/controllers/queued-transactions.controller';
+import QueuedTransactionsController from '../../src/infraestructure/controllers/queued-transactions.controller';
 
 import QueuedTransactionRepository from '../../../../contexts/queue-transactions/infraestructure/queueTransaction.repository';
 
@@ -11,7 +11,7 @@ import { SqsProvide } from '../../../../shared/infraestructure/aws/infraestructu
 import SendMessage from '../../../../shared/infraestructure/aws/infraestructure/sqs/application/sendMessage.provider';
 import SqsProvider from '../../../../shared/infraestructure/aws/infraestructure/sqs/application/sqs.provider';
 
-import ModuleBuilder from '../__mocks__/moduleBuilder.mock';
+import ModuleBuilder from './moduleBuilder.mock';
 
 const queuedTransactionMetadata: ModuleMetadata = {
   imports: [ConfigModule.forRoot()],

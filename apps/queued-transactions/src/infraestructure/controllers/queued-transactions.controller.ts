@@ -23,11 +23,14 @@ export default class QueuedTransactionsController {
   ) {}
 
   @Post('receive')
-  async receive(
-    @Body() transaction: ITransaction,
-    @Res() res: StatusResponse<HttpStatus.OK>,
-  ): Promise<unknown> {
-    const response = await this.sendTransaction.execute(transaction);
-    return res.status(HttpStatus.OK).json({ ...response });
+  async receive() /* @Body() transaction: ITransaction,
+    @Res() res: StatusResponse<HttpStatus.OK>, */
+  : Promise<unknown> {
+    return {
+      statusCode: 200,
+      body: JSON.stringify('Hello World'),
+    };
+    /* const response = await this.sendTransaction.execute(transaction);
+    return res.status(HttpStatus.OK).json({ ...response }); */
   }
 }

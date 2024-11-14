@@ -5,7 +5,7 @@ resource "aws_api_gateway_rest_api" "transactions-processing_api-gwt" {
 resource "aws_api_gateway_resource" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.transactions-processing_api-gwt.id
   parent_id   = aws_api_gateway_rest_api.transactions-processing_api-gwt.root_resource_id
-  path_part   = "transactions"
+  path_part   = "{proxy+}"
 }
 resource "aws_api_gateway_method" "post" {
   rest_api_id   = aws_api_gateway_rest_api.transactions-processing_api-gwt.id
